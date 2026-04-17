@@ -75,7 +75,8 @@ public class DataSeed {
 
     /** Crea la categoría principal por defecto. */
     private void insertCategories() {
-        categoryRepository.save(Category.builder().title("General").build());
+        categoryRepository.save(Category.builder().title("Trabajo").build());
+        categoryRepository.save(Category.builder().title("Personal").build());
     }
 
     /** Crea tareas de ejemplo para demostrar la funcionalidad. */
