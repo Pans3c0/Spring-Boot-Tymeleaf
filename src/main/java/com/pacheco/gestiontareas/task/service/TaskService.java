@@ -17,11 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Servicio principal de la lógica de negocio de tareas.
- * Gestiona la creación, edición, eliminación y listado de tareas,
- * así como el toggle de estado completado y la reasignación de categorías.
- */
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -30,11 +25,7 @@ public class TaskService {
     private final CategoryRepository categoryRepository;
     private final TagService tagService;
 
-    /**
-     * Método interno que busca todas las tareas.
-     * Si se pasa un usuario, filtra por autor. Si no, devuelve todas.
-     * Lanza EmptyTaskListException si no hay tareas.
-     */
+    // Busca tareas y si no hay lanza excepción
     private List<Task> findAll(User user) {
 
         List<Task> result = null;
@@ -50,40 +41,28 @@ public class TaskService {
         return result;
     }
 
-    /** Devuelve las tareas del usuario autenticado. */
     public List<Task> findAllByUser(User user) {
         return findAll(user);
     }
 
-    /** Devuelve todas las tareas (vista de administrador). */
     public List<Task> findAllAdmin() {
         return findAll(null);
     }
 
-    /**
-     * Busca una tarea por su ID.
-     * @throws TaskNotFoundException si no se encuentra la tarea
-     */
     public Task findById(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
-    /** Crea una nueva tarea a partir del formulario de creación. */
     public Task createTask(CreateTaskRequest req, User author) {
         return createOrEditTask(req, author);
     }
 
-    /** Edita una tarea existente a partir del formulario de edición. */
     public Task editTask(EditTaskRequest req) {
         return createOrEditTask(req, null);
     }
 
-    /**
-     * Método interno que maneja tanto la creación como la edición de tareas.
-     * Utiliza herencia de DTOs (CreateTaskRequest / EditTaskRequest).
-     * Se encarga de asignar la categoría y procesar las etiquetas.
-     */
+    // Gestionamos tanto crear como editar en el mismo método privado
     private Task createOrEditTask(CreateTaskRequest req, User author) {
 
         Task task = Task.builder()
@@ -91,7 +70,7 @@ public class TaskService {
                 .description(req.getDescription())
                 .build();
 
-        // Si no se selecciona categoría, se asigna la principal (id=1)
+        // Categoría por defecto si no se elige ninguna
         if (req.getCategoryId() == null || req.getCategoryId() == -1L)
             req.setCategoryId(1L);
         Category category = categoryRepository.getReferenceById(req.getCategoryId());
@@ -100,13 +79,12 @@ public class TaskService {
 
         task.setCategory(category);
 
-        // Procesamos los tags que vienen en formato "tag1,tag2,tag3"
+        // Los tags vienen separados por comas
         List<String> textTags = Arrays.stream(req.getTags().split(","))
                 .map(String::trim)
                 .toList();
         task.getTags().addAll(tagService.saveOrGet(textTags));
 
-        // Si es una edición, recuperamos los datos originales de la tarea
         if (req instanceof EditTaskRequest editReq) {
             Task oldTask = findById(editReq.getId());
             task.setId(oldTask.getId());
@@ -117,27 +95,21 @@ public class TaskService {
             task.setAuthor(author);
         }
 
-        // save() de JPA inserta si no tiene ID, o actualiza si ya lo tiene
         return taskRepository.save(task);
 
     }
 
-    /** Cambia el estado de completado de una tarea (toggle). */
     public Task toggleComplete(Long id) {
         Task task = findById(id);
         task.setCompleted(!task.isCompleted());
         return taskRepository.save(task);
     }
 
-    /** Elimina una tarea por su ID. */
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
 
-    /**
-     * Reasigna todas las tareas de una categoría a otra.
-     * Se usa cuando se elimina una categoría.
-     */
+    // Mover tareas de una categoría a otra (usado al borrar categorías)
     public List<Task> updateCategory(Category oldCategory, Category newCategory) {
         List<Task> tasks = taskRepository.findByCategory(oldCategory);
         tasks.forEach(t -> t.setCategory(newCategory));

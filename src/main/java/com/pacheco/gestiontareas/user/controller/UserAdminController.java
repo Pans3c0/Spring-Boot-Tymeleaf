@@ -9,17 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-/**
- * Controlador de administración de usuarios.
- * Solo accesible por usuarios con rol ADMIN.
- */
 @Controller
 @RequiredArgsConstructor
 public class UserAdminController {
 
     private final UserService userService;
 
-    /** Lista todos los usuarios del sistema. */
     @GetMapping("/admin/user")
     public String listUsers(Model model) {
         model.addAttribute("userList",
@@ -27,7 +22,7 @@ public class UserAdminController {
         return "admin/admin-users";
     }
 
-    /** Promociona un usuario al rol ADMIN. */
+    // Cambiar el rol del usuario a ADMIN
     @GetMapping("/admin/user/{id}/promote")
     public String makeAdmin(@PathVariable Long id, Model model) {
         userService.changeRole(id, UserRole.ADMIN);

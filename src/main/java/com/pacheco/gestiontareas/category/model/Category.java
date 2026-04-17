@@ -8,10 +8,6 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
-/**
- * Entidad JPA que representa una categoría para clasificar las tareas.
- * Cada tarea pertenece a una categoría (relación ManyToOne).
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +21,6 @@ public class Category {
     @GeneratedValue
     private Long id;
 
-    /** Nombre de la categoría (ej: "Trabajo", "Personal", "Estudios") */
     private String title;
 
     @Override

@@ -12,13 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Entidad JPA que representa un usuario del sistema.
- * Implementa UserDetails de Spring Security para integrarse
- * con el sistema de autenticación.
- *
- * La tabla se llama "user_entity" porque "user" es palabra reservada en H2.
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +19,7 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-@Table(name = "user_entity")
+@Table(name = "user_entity") // "user" es palabra reservada
 public class User implements UserDetails {
 
     @Id
@@ -35,13 +28,8 @@ public class User implements UserDetails {
 
     private String username, password, email, fullname;
 
-    /** Rol del usuario (USER o ADMIN) */
     private UserRole role;
 
-    /**
-     * Devuelve las autoridades del usuario para Spring Security.
-     * Se utiliza el prefijo "ROLE_" que es el estándar de Spring.
-     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));

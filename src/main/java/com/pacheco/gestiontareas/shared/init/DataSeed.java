@@ -15,11 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Componente que carga datos iniciales en la base de datos al arrancar.
- * Crea categorías por defecto, usuarios de prueba y tareas de ejemplo.
- * Solo se ejecuta la primera vez que se arranca la aplicación.
- */
 @Component
 @RequiredArgsConstructor
 public class DataSeed {
@@ -28,10 +23,6 @@ public class DataSeed {
     private final TaskService taskService;
     private final UserService userService;
 
-    /**
-     * Método que se ejecuta automáticamente después de la inyección
-     * de dependencias (@PostConstruct).
-     */
     @PostConstruct
     public void init() {
         insertCategories();

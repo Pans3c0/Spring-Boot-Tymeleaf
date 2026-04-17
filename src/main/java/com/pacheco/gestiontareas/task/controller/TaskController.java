@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-/**
- * Controlador principal de tareas para usuarios normales.
- * Gestiona el listado, creación, edición, toggle y borrado de tareas.
- */
 @Controller
 @RequiredArgsConstructor
 public class TaskController {
@@ -31,16 +27,11 @@ public class TaskController {
     private final TaskService taskService;
     private final CategoryService categoryService;
 
-    /**
-     * Carga la lista de categorías para que esté disponible
-     * en todos los formularios de este controlador.
-     */
     @ModelAttribute("categories")
     public List<Category> categories() {
         return categoryService.findAll();
     }
 
-    /** Muestra la lista de tareas del usuario autenticado. */
     @GetMapping({"/", "/list", "/task"})
     public String taskList(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("taskList", taskService.findAllByUser(user));
@@ -48,14 +39,13 @@ public class TaskController {
         return "task-list";
     }
 
-    /** Manejo cuando la lista está vacía (parámetro emptyListError). */
+    // Gestionamos si la lista viene vacía
     @GetMapping(value = {"/", "/list", "/task"}, params = "emptyListError")
     public String createTask(Model model) {
         model.addAttribute("newTask", new CreateTaskRequest());
         return "task-list";
     }
 
-    /** Procesa el formulario de creación de una nueva tarea. */
     @PostMapping("/task/submit")
     public String taskSubmit(
             @Valid @ModelAttribute("newTask") CreateTaskRequest req,
@@ -72,7 +62,6 @@ public class TaskController {
         return "redirect:/";
     }
 
-    /** Muestra el formulario de edición de una tarea por su ID. */
     @GetMapping("/task/{id}")
     public String viewOrEditTask(@PathVariable Long id, Model model) {
         Task task = taskService.findById(id);
@@ -81,7 +70,6 @@ public class TaskController {
         return "show-task";
     }
 
-    /** Procesa el formulario de edición de una tarea existente. */
     @PostMapping("/task/edit/submit")
     public String taskEditSubmit(
             @Valid @ModelAttribute("task") EditTaskRequest req,
@@ -96,14 +84,13 @@ public class TaskController {
         return "redirect:/";
     }
 
-    /** Cambia el estado completado/pendiente de una tarea. */
+    // Marcar como completada o pendiente
     @GetMapping("/task/{id}/toggle")
     public String toggleTask(@PathVariable Long id) {
         taskService.toggleComplete(id);
         return "redirect:/";
     }
 
-    /** Elimina una tarea por su ID. */
     @PostMapping("/task/{id}/del")
     public String deleteTask(@PathVariable Long id) {
         taskService.deleteById(id);

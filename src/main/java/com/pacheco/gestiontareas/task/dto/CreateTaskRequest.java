@@ -8,11 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-/**
- * DTO para el formulario de creación de tareas.
- * Incluye validación con Bean Validation (título obligatorio, categoría requerida).
- * Es la clase padre de EditTaskRequest (herencia en DTOs).
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -8,11 +8,6 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
-/**
- * Entidad JPA que representa una etiqueta (tag).
- * Las etiquetas se asignan a las tareas con una relación ManyToMany.
- * Permiten clasificar las tareas de forma flexible.
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +21,6 @@ public class Tag {
     @GeneratedValue
     private Long id;
 
-    /** Texto de la etiqueta (ej: "urgente", "trabajo", "personal") */
     private String text;
 
     @Override
