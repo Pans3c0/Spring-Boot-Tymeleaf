@@ -20,6 +20,7 @@ Incluye un sistema de autenticación con roles (usuario y administrador).
 ## Funcionalidades
 
 ### Usuario normal
+
 - Registro e inicio de sesión
 - Crear nuevas tareas con título, descripción, categoría y etiquetas
 - Ver y editar tareas propias
@@ -27,44 +28,16 @@ Incluye un sistema de autenticación con roles (usuario y administrador).
 - Eliminar tareas
 
 ### Administrador
+
 - Panel de administración con vista de todas las tareas
 - Gestión de usuarios (promocionar a administrador)
 - Gestión de categorías (crear y eliminar)
 - Vista detallada de cualquier tarea del sistema
 
-## Estructura del proyecto
-
-```
-src/main/java/com/pacheco/gestiontareas/
-├── GestionTareasApplication.java       # Clase principal
-├── category/                           # Módulo de categorías
-│   ├── controller/
-│   ├── model/
-│   └── service/
-├── task/                               # Módulo de tareas
-│   ├── controller/
-│   ├── dto/
-│   ├── exception/
-│   ├── model/
-│   └── service/
-├── user/                               # Módulo de usuarios
-│   ├── controller/
-│   ├── dto/
-│   ├── model/
-│   └── service/
-├── tag/                                # Módulo de etiquetas
-│   ├── model/
-│   └── service/
-└── shared/                             # Configuración compartida
-    ├── config/
-    ├── error/
-    ├── init/
-    └── security/
-```
-
 ## Cómo ejecutar
 
 ### Requisitos previos
+
 - Java 17 o superior
 - Maven 3.8+
 
@@ -94,18 +67,19 @@ docker compose up --build
 
 La aplicación carga datos de prueba automáticamente al iniciar:
 
-| Usuario | Contraseña | Rol |
-|---------|-----------|-----|
-| `user`  | `1234`    | USER |
-| `admin` | `1234`    | ADMIN |
+| Usuario | Contraseña | Rol   |
+| ------- | ---------- | ----- |
+| `user`  | `1234`     | USER  |
+| `admin` | `1234`     | ADMIN |
 
 ## Consola H2
 
 Para acceder a la consola de la base de datos H2:
+
 - URL: `http://localhost:8080/h2-console`
 - JDBC URL: `jdbc:h2:mem:test`
 - Usuario: `sa`
-- Contraseña: *(vacía)*
+- Contraseña: _(vacía)_
 
 ## Arquitectura
 
@@ -122,4 +96,4 @@ y autorización por roles (USER/ADMIN).
 
 ---
 
-*Proyecto de 2º DAW - Desarrollo Web en Entorno Servidor - 2026*
+_Proyecto de 2º DAW - Desarrollo Web en Entorno Servidor - 2026_
