@@ -1,0 +1,20 @@
+services:
+  gestion-tareas:
+    build: .
+    container_name: gestion-tareas
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:file:/data/gestiontareasdb
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_H2_CONSOLE_ENABLED: "true"
+      SPRING_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS: "true"
+    volumes:
+      - app-db-data:/data
+    restart: unless-stopped
+
+volumes:
+  app-db-data:
+    driver: local
